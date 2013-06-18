@@ -10,7 +10,16 @@ var socket;
 
 function openChannel() {
     console.log("Opening channel.");
-    socket = new WebSocket('ws:192.168.1.102:1337/');
+    //socket = new WebSocket('ws:192.168.0.101:1337/');
+    socket = new Firebase('https://liquidgalaxy.firebaseio-demo.com/');
+    socket.on('child_added', function(snapshot) {
+        onChannelMessage(snapshot.val());
+        
+    });
+    socket.send = function (data) {
+        this.push(data);
+    }
+    //socket.onDisconnect().remove();
 }
 
 function doCall() {
@@ -95,10 +104,12 @@ function initialize() {
     openChannel();
 }
 function onChannelMessage(message) {
-    processSignalingMessage(message.data);
+    processSignalingMessage(/*message.data*/message);
 }
-initialize();
-socket.addEventListener("message", onChannelMessage, false);
+window.onload = function() {
+    initialize();
+    //socket.addEventListener("message", onChannelMessage, false);
+}
 
   function preferOpus(sdp) {
     var sdpLines = sdp.split('\r\n');
