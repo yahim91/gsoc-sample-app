@@ -74,7 +74,7 @@ attachMediaStream = function(element, stream) {
 function initialize() {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
     navigator.getUserMedia({audio: false, video: true}, function(localMediaStream) {
-    localvideo = document.querySelector("localvideo");
+    localvideo = document.getElementById("localvideo");
     remoteVideo = document.getElementById("remotevideo");
     RTCPeerConnection = webkitRTCPeerConnection;
 
