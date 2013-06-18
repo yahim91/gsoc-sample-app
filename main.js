@@ -19,7 +19,7 @@ function openChannel() {
     socket.send = function (data) {
         this.push(data);
     }
-    //socket.onDisconnect().remove();
+    socket.onDisconnect().remove();
 }
 
 function doCall() {
@@ -95,13 +95,15 @@ function initialize() {
        peerCon.onaddstream = onRemoteStream;
        peerCon.addStream(localStream);
        localvideo.play();
+       openChannel();
+
     } catch (e) {
         console.log("Error settinglocalvideo src: ", e);
     }
     }, function (error) {
         console.log("navigator.getUserMedia error: ", error);
     });
-    openChannel();
+    //openChannel();
 }
 function onChannelMessage(message) {
     processSignalingMessage(/*message.data*/message);
