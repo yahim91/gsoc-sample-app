@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-video {
-    height: 300px;
-    width:400px
-}
-</style>
+    <style>
+        video {
+            height: 300px;
+            width:400px
+        }
+    </style>
+    <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+    <script src="https://apprtc.appspot.com/_ah/channel/jsapi"></script>
 </head>
 <body>
-<script src="https://apprtc.appspot.com/_ah/channel/jsapi"></script>
-<script src="main.js"></script>
+
+    <script src="main.js"></script>
 <div id="container">
   <video id="localvideo" autoplay></video>
   <video id="remotevideo" width="600px" autoplay></video>
