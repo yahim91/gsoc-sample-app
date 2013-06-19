@@ -1,4 +1,4 @@
-var pc_conf = {"iceServers":[{"url":"stun:stun.l.google.com:19302"}]};
+//var pc_conf = {"iceServers":[{"url":"stun:stun.l.google.com:19302"}]};
 var remoteVideo;
 var started = false;
 var localvideo;
@@ -24,7 +24,9 @@ function openChannel() {
 
 function doCall() {
     console.log("Sending offer to peer.");
-    peerCon.createOffer(setLocalAndSendMessage);
+    peerCon.createOffer(setLocalAndSendMessage, null, {'mandatory': {
+                                                                      'OfferToReceiveAudio': true,
+                                                                      'OfferToReceiveVideo': true }});
 }
 function onIceCandidate(event) {
     if (event.candidate) {
@@ -90,7 +92,7 @@ function initialize() {
     try {
        localvideo.src = window.URL.createObjectURL(localMediaStream);
        localStream = localMediaStream;
-       peerCon = new RTCPeerConnection(pc_conf);
+       peerCon = new RTCPeerConnection(null);
        peerCon.onicecandidate = onIceCandidate;
        peerCon.onaddstream = onRemoteStream;
        peerCon.addStream(localStream);

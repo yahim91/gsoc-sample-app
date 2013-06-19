@@ -11,11 +11,10 @@
     <script src="https://apprtc.appspot.com/_ah/channel/jsapi"></script>
 </head>
 <body>
-
     <script src="main.js"></script>
 <div id="container">
-  <video id="localvideo" autoplay></video>
-  <video id="remotevideo" width="600px" autoplay></video>
+  <video id="localvideo" autoplay="autoplay" muted="true"></video>
+  <video id="remotevideo" autoplay="autoplay"></video>
   <button type=button onclick=doCall()>Connect!</button>
 </div>
 </body>
