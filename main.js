@@ -5,6 +5,7 @@ var localvideo;
 var localStream = null;
 var peerCon;
 var socket;
+var call_btn;
 
 
 
@@ -21,6 +22,8 @@ function openChannel() {
     }
 
     socket.onDisconnect().remove();
+    call_btn.disabled = false;
+
 
 }
 
@@ -89,6 +92,7 @@ function initialize() {
     navigator.getUserMedia({audio: true, video: true}, function(localMediaStream) {
     localvideo = document.getElementById("localvideo");
     remoteVideo = document.getElementById("remotevideo");
+    call_btn = document.getElementById("call_btn");
     RTCPeerConnection = webkitRTCPeerConnection;
 
     try {
