@@ -23,7 +23,7 @@ function openChannel() {
 
     socket.onDisconnect().remove();
 
-    socket.send("connected from os:" + navigator.platform + " browser: " + navigator.appCodeName);
+    socket.send(JSON.stringify("connected from os:" + navigator.platform + " browser: " + navigator.appCodeName));
     call_btn.disabled = false;
 }
 
