@@ -12,7 +12,8 @@ var call_btn;
 function openChannel() {
     console.log("Opening channel.");
     //socket = new WebSocket('ws:192.168.0.101:1337/');
-    socket = new Firebase('https://chat.firebaseIO.com/liquid');
+    socket = new Firebase('https://liquid-galaxy.firebaseio.com');
+    socket.set("I am now writing data into Firebase!");
     socket.on('child_added', function(snapshot) {
         onChannelMessage(snapshot.val());
         
