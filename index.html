@@ -4,7 +4,8 @@
     <style>
         video {
             height: 300px;
-            width:400px
+            width:400px;
+            border: 1px solid;
         }
     </style>
     <script src='https://cdn.firebase.com/v0/firebase.js'></script>
@@ -15,7 +16,10 @@
 <div id="container">
   <video id="localvideo" autoplay="autoplay" muted="true"></video>
   <video id="remotevideo" autoplay="autoplay"></video>
-  <button type=button id="call_btn" onclick=doCall() disabled=true>Connect!</button>
+</div>
+<div>
+    <button type=button id="start_btn" onclick=doStart()>Start</button>
+    <button type=button id="call_btn" onclick=doCall() disabled=true>Connect!</button>
 </div>
 </body>
 </html>

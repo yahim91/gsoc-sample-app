@@ -6,6 +6,7 @@ var localStream = null;
 var peerCon;
 var socket;
 var call_btn;
+var start_btn;
 
 
 
@@ -92,7 +93,6 @@ function initialize() {
     navigator.getUserMedia({audio: true, video: true}, function(localMediaStream) {
     localvideo = document.getElementById("localvideo");
     remoteVideo = document.getElementById("remotevideo");
-    call_btn = document.getElementById("call_btn");
     RTCPeerConnection = webkitRTCPeerConnection;
 
     try {
@@ -111,14 +111,21 @@ function initialize() {
     }, function (error) {
         console.log("navigator.getUserMedia error: ", error);
     });
-    //openChannel();
 }
 function onChannelMessage(message) {
     processSignalingMessage(/*message.data*/message);
 }
 window.onload = function() {
-    initialize();
+    console.log("window loaded successfully");
+    start_btn = document.getElementById("start_btn");
+    call_btn = document.getElementById("call_btn");
     //socket.addEventListener("message", onChannelMessage, false);
+}
+
+function doStart() {
+    console.log("Button start pressed - initialize called");
+    initialize();
+    start_btn.disabled = true;
 }
 
   function preferOpus(sdp) {
