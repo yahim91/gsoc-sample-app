@@ -1,4 +1,4 @@
-//var pc_conf = {"iceServers":[{"url":"stun:stun.l.google.com:19302"}]};
+var pc_conf = {"iceServers":[{"url":"stun:stun.l.google.com:19302"}]};
 var remoteVideo;
 var started = false;
 var localvideo;
@@ -7,6 +7,8 @@ var peerCon;
 var socket;
 var call_btn;
 var start_btn;
+var send_btn;
+var sendChannel, receiveChannel;
 
 
 
@@ -26,13 +28,14 @@ function openChannel() {
 
     socket.send(JSON.stringify("connected from os:" + navigator.platform + " browser: " + navigator.appCodeName));
     call_btn.disabled = false;
+    send_btn.disabled = false;
 }
 
 function doCall() {
     console.log("Sending offer to peer.");
-    peerCon.createOffer(setLocalAndSendMessage, null, {'mandatory': {
+    peerCon.createOffer(setLocalAndSendMessage, null/*, {'mandatory': {
                                                                       'OfferToReceiveAudio': true,
-                                                                      'OfferToReceiveVideo': true }});
+                                                                      'OfferToReceiveVideo': true }}*/);
 }
 function onIceCandidate(event) {
     if (event.candidate) {
@@ -67,7 +70,7 @@ function doAnswer() {
 }
 
 function setLocalAndSendMessage(sessionDescription) {
-        sessionDescription.sdp = preferOpus(sessionDescription.sdp);
+        sessionDescription.sdp = /*preferOpus(*/sessionDescription.sdp/*)*/;
         peerCon.setLocalDescription(sessionDescription);
         sendMessage(sessionDescription);
 }
@@ -98,8 +101,17 @@ function initialize() {
     try {
        localvideo.src = window.URL.createObjectURL(localMediaStream);
        localStream = localMediaStream;
-       peerCon = new RTCPeerConnection(null);
+       peerCon = new RTCPeerConnection(pc_conf, {
+				optional : [ {
+					RtpDataChannels : true
+				} ]
+			});
+       sendChannel = peerCon.createDataChannel(
+                        "sendDataChannel", {
+							reliable : false
+						});
        peerCon.onicecandidate = onIceCandidate;
+       peerCon.ondatachannel = gotReceiveChannel;
        peerCon.onaddstream = onRemoteStream;
        peerCon.addStream(localStream);
        localvideo.play();
@@ -112,6 +124,20 @@ function initialize() {
         console.log("navigator.getUserMedia error: ", error);
     });
 }
+function send() {
+    var data = document.getElementById("chat").value;
+	sendChannel.send(data);
+}
+
+function gotReceiveChannel(event) {
+    receiveChannel = event.channel;
+    receiveChannel.onmessage = handleMessage;
+}
+
+function handleMessage(event) {
+    document.getElementById("chat").value += event.data;
+}
+
 function onChannelMessage(message) {
     processSignalingMessage(/*message.data*/message);
 }
@@ -119,6 +145,7 @@ window.onload = function() {
     console.log("window loaded successfully");
     start_btn = document.getElementById("start_btn");
     call_btn = document.getElementById("call_btn");
+    //send_btn = document.getElementById("send_btn");
     //socket.addEventListener("message", onChannelMessage, false);
 }
 
@@ -197,4 +224,3 @@ function doStart() {
     sdpLines[mLineIndex] = mLineElements.join(' ');
     return sdpLines;
   }
-
