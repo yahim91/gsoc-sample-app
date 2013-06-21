@@ -28,7 +28,7 @@ function openChannel() {
 
     socket.send(JSON.stringify("connected from os:" + navigator.platform + " browser: " + navigator.appCodeName));
     call_btn.disabled = false;
-    send_btn.disabled = false;
+    //send_btn.disabled = false;
 }
 
 function doCall() {
@@ -102,14 +102,12 @@ function initialize() {
        localvideo.src = window.URL.createObjectURL(localMediaStream);
        localStream = localMediaStream;
        peerCon = new RTCPeerConnection(pc_conf, {
-				optional : [ {
-					RtpDataChannels : true
-				} ]
+				optional : [ { "DtlsSrtpKeyAgreement": true} ]
 			});
-       sendChannel = peerCon.createDataChannel(
+       /*sendChannel = peerCon.createDataChannel(
                         "sendDataChannel", {
 							reliable : false
-						});
+						});*/
        peerCon.onicecandidate = onIceCandidate;
        peerCon.ondatachannel = gotReceiveChannel;
        peerCon.onaddstream = onRemoteStream;
